@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include <array>
+#include "EnvFollower.h"
 
 //==============================================================================
 /**
@@ -60,17 +61,13 @@ private:
     //==============================================================================
     
     float threshhold = 0.1f;
-    float ratio = 0.25;
-    float attack  = 0.00001f;
-    float release = 0.00005f;
-    float envFollow = 0.0f;
+    float ratio = 0.1;
+    float gainReduction = 0.0f;
     
-    std::array<float, 2> envMem = {0.0f, 0.0f};
+    float attack  = 0.001f;
+    float release = 0.01f;
     
-    
-    float filtA = 0;
-    float filtB = 0;
-    float filtGain = 1.5;
+    std::array<EnvFollower, 2> followers;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompTefAudioProcessor)
 };

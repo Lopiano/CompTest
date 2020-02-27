@@ -97,9 +97,10 @@ void CompTefAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    float basefc = 10.0/getSampleRate();
-    filtB = expf(-2.0f * float_Pi * basefc);
-    filtA = 1.0f - filtB;
+    for (int i = 0; i < followers.size(); ++i)
+    {
+        followers[i].prepare(getSampleRate(), threshhold, ratio, attack, release);
+    }
 }
 
 void CompTefAudioProcessor::releaseResources()
@@ -160,22 +161,18 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
 
         for (int i = 0; i < buffer.getNumSamples(); ++i)
         {
-            float absChan = fabs(*channelData);
+            followers[channel].calculate(*channelData);
+            float envLevel = followers[channel].getEnvOuput();
             
-            envMem[channel] = filtA * absChan * filtGain + filtB * envMem[channel];
+            float overAmt  = envLevel > threshhold? envLevel - threshhold: 0.0f;
             
-//            float overAmt  = (envMem > threshhold)? envMem - threshhold: 0;
+            if (overAmt > 0.0f)
+            {
+                gainReduction = (threshhold + ratio * overAmt)/ envLevel;
+            }
             
-//            if (overAmt > 0 && envFollow < (1.0 - threshhold))
-//            {
-//                envFollow += (absChan * attack);
-//            }
-//            else if (envFollow >= 0.0)
-//            {
-//                envFollow -= (absChan * release);
-//            }
-            //*channelData *= (1.0f - envFollow);
-            *channelData = envMem[channel];
+            *channelData *= gainReduction;
+            //*channelData = followers[channel].getSideChain();
             channelData++;
         }
     }

@@ -3,13 +3,19 @@
 <JUCERPROJECT id="tNGzqa" name="CompTef" projectType="audioplug" jucerVersion="5.4.7">
   <MAINGROUP id="uDHqla" name="CompTef">
     <GROUP id="{F67422BE-C7AF-FD3E-B16D-8F9040C366FE}" name="Source">
-      <FILE id="vDzwws" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
       <FILE id="HWoiqK" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="vDzwws" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="PuMmWM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="YikPL8" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="PuMmWM" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <GROUP id="{F9D16F1F-0202-E680-48A6-E76BE3DFAB9C}" name="Compressor">
+        <GROUP id="{8C86198F-283E-CED8-C664-EDB4945D0366}" name="EnvFollower">
+          <FILE id="mb1KG9" name="EnvFollower.h" compile="0" resource="0" file="Source/EnvFollower.h"/>
+          <FILE id="eQxl14" name="EnvFollower.cpp" compile="1" resource="0" file="Source/EnvFollower.cpp"/>
+        </GROUP>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
