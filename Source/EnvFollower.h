@@ -31,9 +31,10 @@ public:
     
 private:
     
-//    int numIn = 0;
-//    int sampleMax = 500;
-//
+    int numIn = 0;
+    int sampleMax = 500;
+    float maxVal = 0.0f;
+
     float filtA = 0;
     float filtB = 0;
     float filtGain = 1.5;

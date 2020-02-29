@@ -34,7 +34,11 @@ void EnvFollower::calculate(float input)
 {
     float absChan = fabs(input);
     
-    envMem = filtA * absChan * filtGain + filtB * envMem;
+    numIn = numIn == sampleMax? 0 : numIn + 1;
+    
+    maxVal = numIn == 0? absChan: jmax(absChan, maxVal);
+    
+    envMem = filtA * maxVal * filtGain + filtB * envMem;
     
     if (envMem > envLevel)
     {
