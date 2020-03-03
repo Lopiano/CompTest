@@ -12,7 +12,7 @@
 
 EnvFollower::EnvFollower()
 {
-    
+    buff.resize(500);
 }
 
 void EnvFollower::prepare(double sampleRate, float threshold, float ratio,
@@ -34,19 +34,31 @@ void EnvFollower::calculate(float input)
 {
     float absChan = fabs(input);
     
-    numIn = numIn == sampleMax? 0 : numIn + 1;
+    maxVal = addBuffSample(absChan);
     
-    maxVal = numIn == 0? absChan: jmax(absChan, maxVal);
-    
-    envMem = filtA * maxVal * filtGain + filtB * envMem;
+    envMem = filtA * maxVal + filtB * envMem;
     
     if (envMem > envLevel)
     {
-        envLevel += attackSlope;
+        if (envLevel + attackSlope >= envMem)
+        {
+            envLevel = envMem;
+        }
+        else
+        {
+            envLevel += attackSlope;
+        }
     }
-    else if (envLevel > 0)
+    else if (envLevel > 0 && envLevel > envMem)
     {
-        envLevel -= releaseSlope;
+        if (envLevel - releaseSlope < envMem)
+        {
+            envLevel = envMem;
+        }
+        else
+        {
+            envLevel -= releaseSlope;
+        }
     }
 }
 
@@ -58,4 +70,16 @@ float EnvFollower::getSideChain()
 float EnvFollower::getEnvOuput()
 {
     return envLevel;
+}
+
+float EnvFollower::addBuffSample(float newSample)
+{
+    *(buff.begin() + buffPos) = newSample;
+    buffPos++;
+    if (buffPos == 500)
+    {
+        //*(buff.begin() + buffPos) = -1.0f;
+        buffPos = 0;
+    }
+    return *std::max_element(buff.begin(), buff.end());
 }

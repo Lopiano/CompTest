@@ -171,8 +171,8 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
                 gainReduction = (threshhold + ratio * overAmt)/ envLevel;
             }
             
-            //*channelData *= gainReduction;
-            *channelData = followers[channel].getSideChain();
+            *channelData *= gainReduction;
+            //*channelData = followers[channel].getEnvOuput();
             channelData++;
         }
     }

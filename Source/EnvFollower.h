@@ -29,10 +29,10 @@ public:
     
     float getEnvOuput();
     
+    float addBuffSample(float newSample);
+    
 private:
     
-    int numIn = 0;
-    int sampleMax = 500;
     float maxVal = 0.0f;
 
     float filtA = 0;
@@ -45,4 +45,8 @@ private:
     float envLevel = 0.0f;
     
     float envMem = 0.0f;
+    
+    std::vector<float> buff;
+    
+    int buffPos = 0;
 };

@@ -64,8 +64,8 @@ private:
     float ratio = 0.1;
     float gainReduction = 0.0f;
     
-    float attack  = 0.001f;
-    float release = 0.01f;
+    float attack  = 0.01f;
+    float release = 0.1f;
     
     std::array<EnvFollower, 2> followers;
     
