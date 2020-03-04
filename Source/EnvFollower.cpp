@@ -23,11 +23,11 @@ void EnvFollower::prepare(double sampleRate, float threshold, float ratio,
     filtB = expf(-2.0f * float_Pi * basefc);
     filtA = 1.0f - filtB;
     
-    float tenDbAbove = threshold * Decibels::decibelsToGain(10.0);
+    float tenDbAbove = Decibels::decibelsToGain(threshold) * Decibels::decibelsToGain(10.0);
     
     attackSlope = tenDbAbove/(attack * sampleRate);
     
-    releaseSlope = threshold/(release * sampleRate);
+    releaseSlope = Decibels::decibelsToGain(threshold)/(release * sampleRate);
 }
 
 void EnvFollower::calculate(float input)

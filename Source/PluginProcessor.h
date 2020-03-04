@@ -65,12 +65,6 @@ public:
 private:
     //==============================================================================
     
-//    float threshhold = 0.1f;
-//    float ratio = 0.5;
-//    
-//    float attack  = 0.03f;
-//    float release = 0.1f;
-    
     ParamVecs  pVecs;
     std::array<EnvFollower, 2> followers;
     

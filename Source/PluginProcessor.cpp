@@ -169,7 +169,7 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    float threshhold = pVecs.compParams[3].param->get();
+    float threshhold = Decibels::decibelsToGain(pVecs.compParams[3].param->get());
     float ratio = pVecs.compParams[2].param->get();
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -191,7 +191,7 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             }
             
             *channelData *= gainReduction;
-            //*channelData = gainReduction;
+            //*channelData = envLevel;
             channelData++;
         }
     }

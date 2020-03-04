@@ -43,12 +43,14 @@ public:
     
     void addFloatParamStruct(FloatParam& pStrt);
     
+   float  threshDef = Decibels::gainToDecibels(0.1f);
+    
     std::vector<FloatParam> compParams =
     {
         {"Attack",   "att", 0.01f,  0.001f, 0.1f},
         {"Release",  "rel", 0.1f,   0.01f,  1.0f},
         {"Ratio",    "rat", 0.5f,   0.1f,   1.0f},
-        {"Treshold", "thr", 0.1f,   0.001f, 1.0f}
+        {"Treshold", "thr", threshDef,   -96.0f, 0.0f}
     };
     
     std::vector<AudioParameterFloat*> floatParams;
