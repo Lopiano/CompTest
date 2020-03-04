@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "paramVecs.h"
+#include "ParamVecs.h"
 
 ParamVecs::ParamVecs(AudioProcessor& owner)
 : processor(owner)
