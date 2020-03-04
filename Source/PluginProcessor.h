@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include <array>
+#include "ParamVecs.h"
 #include "EnvFollower.h"
 
 //==============================================================================
@@ -56,17 +57,21 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    //==============================================================================
+    
+    ParamVecs& getPVecs() {return pVecs;};
 
 private:
     //==============================================================================
     
-    float threshhold = 0.1f;
-    float ratio = 0.1;
-    float gainReduction = 0.0f;
+//    float threshhold = 0.1f;
+//    float ratio = 0.5;
+//    
+//    float attack  = 0.03f;
+//    float release = 0.1f;
     
-    float attack  = 0.01f;
-    float release = 0.1f;
-    
+    ParamVecs  pVecs;
     std::array<EnvFollower, 2> followers;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompTefAudioProcessor)

@@ -21,9 +21,11 @@ CompTefAudioProcessor::CompTefAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        pVecs(*this)
 #endif
 {
+    pVecs.addAllParameters();
 }
 
 CompTefAudioProcessor::~CompTefAudioProcessor()
@@ -99,7 +101,11 @@ void CompTefAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     // initialisation that you need..
     for (int i = 0; i < followers.size(); ++i)
     {
-        followers[i].prepare(getSampleRate(), threshhold, ratio, attack, release);
+        followers[i].prepare(getSampleRate(),
+                             pVecs.compParams[3].param->get(),
+                             pVecs.compParams[2].param->get(),
+                             pVecs.compParams[0].param->get(),
+                             pVecs.compParams[1].param->get());
     }
 }
 
@@ -135,6 +141,15 @@ bool CompTefAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
 
 void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
+    for (int i = 0; i < followers.size(); ++i)
+    {
+        followers[i].prepare(getSampleRate(),
+                             pVecs.compParams[3].param->get(),
+                             pVecs.compParams[2].param->get(),
+                             pVecs.compParams[0].param->get(),
+                             pVecs.compParams[1].param->get());
+    }
+    
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -154,6 +169,8 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    float threshhold = pVecs.compParams[3].param->get();
+    float ratio = pVecs.compParams[2].param->get();
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -165,6 +182,8 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             float envLevel = followers[channel].getEnvOuput();
             
             float overAmt  = envLevel > threshhold? envLevel - threshhold: 0.0f;
+            float gainReduction = 1.0f;
+            
             
             if (overAmt > 0.0f)
             {
@@ -172,7 +191,7 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             }
             
             *channelData *= gainReduction;
-            //*channelData = followers[channel].getEnvOuput();
+            //*channelData = gainReduction;
             channelData++;
         }
     }

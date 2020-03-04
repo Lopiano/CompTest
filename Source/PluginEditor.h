@@ -12,21 +12,30 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "BPSlider.h"
 
 //==============================================================================
 /**
 */
-class CompTefAudioProcessorEditor  : public AudioProcessorEditor
+class CompTefAudioProcessorEditor  : public AudioProcessorEditor,
+                                     public Slider::Listener
 {
 public:
     CompTefAudioProcessorEditor (CompTefAudioProcessor&);
     ~CompTefAudioProcessorEditor();
+    
+    void sliderValueChanged (Slider* slider) override;
 
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
 
 private:
+    
+    std::unique_ptr<BPSlider> attSlider;
+    std::unique_ptr<BPSlider> relSlider;
+    std::unique_ptr<BPSlider> ratSlider;
+    std::unique_ptr<BPSlider> thrSlider;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     CompTefAudioProcessor& processor;
