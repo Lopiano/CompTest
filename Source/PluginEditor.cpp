@@ -24,6 +24,9 @@ CompTefAudioProcessorEditor::CompTefAudioProcessorEditor (CompTefAudioProcessor&
     thrSlider = std::make_unique<BPSlider>(*p.getPVecs().compParams[3].param, this);
     addAndMakeVisible(*thrSlider);
     
+    meter = std::make_unique<GRMeter>(p.getGR());
+    addAndMakeVisible(*meter);
+    
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
@@ -77,6 +80,9 @@ void CompTefAudioProcessorEditor::resized()
     
     thrSlider->setBounds (0, 75, 400, 25);
     thrSlider->setSize   (400, 25);
+    
+    meter->setBounds(0, 100, 400, 25);
+    meter->setSize(400, 25);
     
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..

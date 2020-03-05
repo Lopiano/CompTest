@@ -75,11 +75,29 @@ float EnvFollower::getEnvOuput()
 float EnvFollower::addBuffSample(float newSample)
 {
     *(buff.begin() + buffPos) = newSample;
+    
+    float newMax = 0;
+    if (newSample >= lastMax)
+    {
+        newMax = newSample;
+        maxPos = buffPos;
+    }
+    else if (maxPos != buffPos)
+    {
+        newMax = lastMax;
+    }
+    else
+    {
+        auto maxFound = std::max_element(buff.begin(), buff.end());
+        maxPos = static_cast<int>(std::distance(buff.begin(), maxFound));
+        newMax = *maxFound;
+    }
+    lastMax = newMax;
+    
     buffPos++;
     if (buffPos == 500)
     {
-        //*(buff.begin() + buffPos) = -1.0f;
         buffPos = 0;
     }
-    return *std::max_element(buff.begin(), buff.end());
+    return newMax;
 }

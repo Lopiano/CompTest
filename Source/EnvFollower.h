@@ -49,4 +49,6 @@ private:
     std::vector<float> buff;
     
     int buffPos = 0;
+    int maxPos = 0;
+    float lastMax = 0.0f;
 };

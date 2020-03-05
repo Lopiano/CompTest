@@ -61,11 +61,13 @@ public:
     //==============================================================================
     
     ParamVecs& getPVecs() {return pVecs;};
+    float& getGR() {return gainReduction[0];};
 
 private:
     //==============================================================================
     
     ParamVecs  pVecs;
+    std::array<float, 2> gainReduction;
     std::array<EnvFollower, 2> followers;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompTefAudioProcessor)

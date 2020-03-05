@@ -20,6 +20,8 @@
     <GROUP id="{D4559A9E-2753-D45B-6B43-D65B74B889FE}" name="Gui">
       <FILE id="a7eyZw" name="BPSlider.h" compile="0" resource="0" file="Source/BPSlider.h"/>
       <FILE id="NUfHhB" name="BPSlider.cpp" compile="1" resource="0" file="Source/BPSlider.cpp"/>
+      <FILE id="rlEOMx" name="GRMeter.h" compile="0" resource="0" file="Source/GRMeter.h"/>
+      <FILE id="ohwX3M" name="GRMeter.cpp" compile="1" resource="0" file="Source/GRMeter.cpp"/>
     </GROUP>
     <GROUP id="{63EB514E-EA68-2177-695D-CAC044707F7A}" name="Helpers">
       <FILE id="bzHzaE" name="ParamVecs.h" compile="0" resource="0" file="Source/ParamVecs.h"/>

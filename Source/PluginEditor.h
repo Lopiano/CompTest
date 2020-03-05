@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "BPSlider.h"
+#include "GRMeter.h"
 
 //==============================================================================
 /**
@@ -36,6 +37,8 @@ private:
     std::unique_ptr<BPSlider> relSlider;
     std::unique_ptr<BPSlider> ratSlider;
     std::unique_ptr<BPSlider> thrSlider;
+    
+    std::unique_ptr<GRMeter> meter;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     CompTefAudioProcessor& processor;
