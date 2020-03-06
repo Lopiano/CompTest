@@ -23,7 +23,10 @@ void GRMeter::timerCallback()
 
 void GRMeter::paint (Graphics& g)
 {
-    Rectangle<float> downAmt = getLocalBounds().toFloat().removeFromRight((1.0f - currentGR) * getWidth());
+    float grInDb = Decibels::gainToDecibels(currentGR);
+    float reductionAmt = -1.0f * grInDb / 42.0f;
+    
+    Rectangle<float> downAmt = getLocalBounds().toFloat().removeFromRight(reductionAmt * getWidth());
     g.setColour(juce::Colours::red.withSaturation(currentGR));
     g.fillRect(downAmt);
     //g.fillAll();
