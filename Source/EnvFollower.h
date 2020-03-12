@@ -31,6 +31,13 @@ public:
     
     float addBuffSample(float newSample);
     
+    enum State
+    {
+        rest,
+        attack,
+        release
+    };
+    
 private:
     
     float maxVal = 0.0f;
@@ -42,6 +49,8 @@ private:
     float attackSlope = 0.0f;
     float releaseSlope  = 0.0f;
     
+    float relstore = 0.0f;
+    
     float envLevel = 0.0f;
     
     float envMem = 0.0f;
@@ -51,4 +60,9 @@ private:
     int buffPos = 0;
     int maxPos = 0;
     float lastMax = 0.0f;
+    
+    State state;
+    float envFlip;
+    float memFlip;
+    float thresh;
 };
