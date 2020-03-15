@@ -17,26 +17,23 @@ class EnvFollower
 {
 public:
     
+    ///ctor
     EnvFollower();
     
+    ///dtor
     ~EnvFollower(){};
     
+    /// Sets things up for the current params and sample rate
     void prepare(double sampleRate, float threshold, float ratio, float attack, float release);
     
+    /// Does the buisness
     void calculate(float input);
     
-    float getSideChain();
-    
+    /// Gets output
     float getEnvOuput();
     
+    ///Add a new sample to the buffer used to find the max and returns the current max
     float addBuffSample(float newSample);
-    
-    enum State
-    {
-        rest,
-        attack,
-        release
-    };
     
 private:
     
@@ -49,7 +46,8 @@ private:
     float attackSlope = 0.0f;
     float releaseSlope  = 0.0f;
     
-    float relstore = 0.0f;
+    float attMult = 0.0f;
+    float relMult = 0.0f;
     
     float envLevel = 0.0f;
     
@@ -61,8 +59,8 @@ private:
     int maxPos = 0;
     float lastMax = 0.0f;
     
-    State state;
-    float envFlip;
-    float memFlip;
     float thresh;
+    
+    /// this is just for testing
+    float getSideChain(){return envMem;};
 };

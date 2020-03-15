@@ -23,15 +23,19 @@ void EnvFollower::prepare(double sampleRate, float threshold, float ratio,
     filtB = expf(-2.0f * float_Pi * basefc);
     filtA = 1.0f - filtB;
     
-    //float tenDbAbove = Decibels::decibelsToGain(threshold) * Decibels::decibelsToGain(10.0);
-    
     thresh = Decibels::decibelsToGain(threshold);
     
+    ///the eight is technically incorrect but makes things work well
     attackSlope = 1.0f/(attack / 8.0f * sampleRate);
     
+    ///the one point five is technically incorrect but makes things work well
     releaseSlope =  1.0f/(release * sampleRate * 1.5);
-    //releaseSlope = powf(0.000001f/ thresh, 1.0f/(release * sampleRate));
     
+    ///turn on below to make technically correct
+//    float tenDbAbove = Decibels::decibelsToGain(threshold) * Decibels::decibelsToGain(10.0);
+//    attMult = powf(tenDbAbove/0.00001f, attackSlope);
+//    relMult = powf(0.00001f/ thresh, releaseSlope);
+    ///end
 }
 
 void EnvFollower::calculate(float input)
@@ -48,43 +52,32 @@ void EnvFollower::calculate(float input)
         {
             envLevel = 0.00001f;
         }
+        ///turn off line below to make technically correct
+        attMult = pow((envMem + 0.00001f)/ envLevel, attackSlope);
         
-        float attAmt = pow((envMem + 0.00001f)/ (envLevel), attackSlope);
-        
-        if (envLevel * attAmt >= envMem)
+        if (envLevel * attMult >= envMem)
         {
-            state = rest;
             envLevel = envMem;
         }
         else
         {
-            envLevel *= attAmt;
-            state = attack;
+            envLevel *= attMult;
         }
     }
     else if (envLevel > 0 && envLevel > envMem)
     {
-        float relAmt = pow((envMem + 0.00001f) /envLevel, releaseSlope);
+        ///turn off line below to make technically correct
+        relMult = pow((envMem + 0.00001f) /envLevel, releaseSlope);
         
-        if (envLevel * relAmt < envMem)
+        if (envLevel * relMult < envMem)
         {
             envLevel = envMem;
         }
         else
         {
-            state = release;
-            envLevel *= relAmt;
+            envLevel *= relMult;
         }
     }
-    else if (envMem == envLevel)
-    {
-        state = rest;
-    }
-}
-
-float EnvFollower::getSideChain()
-{
-    return envMem;
 }
 
 float EnvFollower::getEnvOuput()
