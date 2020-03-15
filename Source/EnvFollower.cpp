@@ -27,9 +27,11 @@ void EnvFollower::prepare(double sampleRate, float threshold, float ratio,
     
     thresh = Decibels::decibelsToGain(threshold);
     
-    attackSlope = 1.0f/(attack * sampleRate);
+    attackSlope = 1.0f/(attack / 8.0f * sampleRate);
     
-    releaseSlope = 1.0f/(release * sampleRate);
+    releaseSlope =  1.0f/(release * sampleRate * 1.5);
+    //releaseSlope = powf(0.000001f/ thresh, 1.0f/(release * sampleRate));
+    
 }
 
 void EnvFollower::calculate(float input)
@@ -42,27 +44,36 @@ void EnvFollower::calculate(float input)
     
     if (envMem > envLevel)
     {
-        if (envLevel + attackSlope >= envMem)
+        if (envLevel < 0.00001f)
+        {
+            envLevel = 0.00001f;
+        }
+        
+        float attAmt = pow((envMem + 0.00001f)/ (envLevel), attackSlope);
+        
+        if (envLevel * attAmt >= envMem)
         {
             state = rest;
             envLevel = envMem;
         }
         else
         {
-            envLevel += attackSlope;
+            envLevel *= attAmt;
             state = attack;
         }
     }
     else if (envLevel > 0 && envLevel > envMem)
     {
-        if (envLevel - releaseSlope < envMem)
+        float relAmt = pow((envMem + 0.00001f) /envLevel, releaseSlope);
+        
+        if (envLevel * relAmt < envMem)
         {
             envLevel = envMem;
         }
         else
         {
             state = release;
-            envLevel = (envLevel * releaseSlope);
+            envLevel *= relAmt;
         }
     }
     else if (envMem == envLevel)

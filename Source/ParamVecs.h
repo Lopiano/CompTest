@@ -50,7 +50,8 @@ public:
         {"Attack",   "att", 0.01f,  0.001f, 0.1f},
         {"Release",  "rel", 0.1f,   0.01f,  1.0f},
         {"Ratio",    "rat", 0.5f,   0.1f,   1.0f},
-        {"Treshold", "thr", threshDef,   -96.0f, 0.0f}
+        {"Treshold", "thr", threshDef,   -96.0f, 0.0f},
+        {"MakeUp",   "mug", 0.0f, 0.0f, 48.0f}
     };
     
     std::vector<AudioParameterFloat*> floatParams;

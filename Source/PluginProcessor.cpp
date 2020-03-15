@@ -172,6 +172,8 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
     float threshhold = pVecs.compParams[3].param->get();
     float ratio = pVecs.compParams[2].param->get();
     
+    float makeUp = Decibels::decibelsToGain(pVecs.compParams[4].param->get());
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -185,8 +187,8 @@ void CompTefAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer
             
             gainReduction[channel] = Decibels::decibelsToGain(-1.0f * ratio * overAmt);
             
-            //*channelData *= gainReduction[channel];
-            *channelData = followers[channel].getEnvOuput();
+            *channelData *= gainReduction[channel] * makeUp;
+            //*channelData = followers[channel].getEnvOuput();
             channelData++;
         }
     }

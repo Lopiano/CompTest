@@ -37,6 +37,7 @@ private:
     std::unique_ptr<BPSlider> relSlider;
     std::unique_ptr<BPSlider> ratSlider;
     std::unique_ptr<BPSlider> thrSlider;
+    std::unique_ptr<BPSlider> mugSlider;
     
     std::unique_ptr<GRMeter> meter;
     // This reference is provided as a quick way for your editor to

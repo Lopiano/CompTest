@@ -23,6 +23,8 @@ CompTefAudioProcessorEditor::CompTefAudioProcessorEditor (CompTefAudioProcessor&
     addAndMakeVisible(*ratSlider);
     thrSlider = std::make_unique<BPSlider>(*p.getPVecs().compParams[3].param, this);
     addAndMakeVisible(*thrSlider);
+    mugSlider = std::make_unique<BPSlider>(*p.getPVecs().compParams[4].param, this);
+    addAndMakeVisible(*mugSlider);
     
     meter = std::make_unique<GRMeter>(p.getGR());
     addAndMakeVisible(*meter);
@@ -54,6 +56,10 @@ void CompTefAudioProcessorEditor::sliderValueChanged (Slider* slider)
     {
         *processor.getPVecs().compParams[3].param = slider->getValue();
     }
+    if (slider == mugSlider.get())
+    {
+        *processor.getPVecs().compParams[4].param = slider->getValue();
+    }
 }
 
 //==============================================================================
@@ -81,8 +87,11 @@ void CompTefAudioProcessorEditor::resized()
     thrSlider->setBounds (0, 75, 400, 25);
     thrSlider->setSize   (400, 25);
     
-    meter->setBounds(0, 100, 400, 25);
-    meter->setSize(400, 25);
+    mugSlider->setBounds(0, 100, 400, 25);
+    mugSlider->setSize  (400, 25);
+    
+    meter->setBounds    (0, 125, 400, 25);
+    meter->setSize      (400, 25);
     
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
